@@ -1,28 +1,28 @@
+import { UseOpenHour } from "./UseOpenHour";
 import pizzaData from "./data";
 const numPizzas = pizzaData.length;
-console.log(numPizzas);
+const { isOpen } = UseOpenHour();
 export const Menu = () => {
   return (
     <main className="menu">
       <h2>Our menu</h2>
-      <ul className="pizzas">{numPizzas > 0 && <Pizza data={pizzaData} />}</ul>
+      <p>Authentic Italian cuisine</p>
+      <ul className="pizzas">
+        {numPizzas > 0 && isOpen && <Pizza data={pizzaData} />}
+      </ul>
     </main>
   );
 };
-console.log(pizzaData);
+
 function Pizza({ data }: { data: pizzaData[] }) {
-  return data.map((el) =>
-    el.soldOut ? (
-      ""
-    ) : (
-      <li key={el.name} className="pizza">
-        <img src={el.photoName} alt="photo" />
-        <div>
-          <h3>{el.name}</h3>
-          <p>{el.ingredients}</p>
-          <span>{el.price}</span>
-        </div>
-      </li>
-    )
-  );
+  return data.map((el) => (
+    <li key={el.name} className={`${!el.soldOut ? "pizza" : "pizza sold-out"}`}>
+      <img src={el.photoName} alt="photo" />
+      <div>
+        <h3>{el.name}</h3>
+        <p>{el.ingredients}</p>
+        <span>{el.soldOut ? "Sold Out" : el.price}</span>
+      </div>
+    </li>
+  ));
 }
